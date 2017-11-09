@@ -14,8 +14,8 @@
 Copy/Paste the zArabic folder into the Maxon plugins directory.
 
 Default location:
-  - Windows:	C:\Program Files\MAXON\CINEMA 4D R14\plugins\
-  - Mac OS:	/Applications/MAXON/CINEMA 4D R14/plugins/
+  - Windows:	C:\Program Files\MAXON\CINEMA 4D R<version>\plugins\
+  - Mac OS:	/Applications/MAXON/CINEMA 4D R<version>/plugins/
 
 ### How to use :
   - Select your Text or MoText object
