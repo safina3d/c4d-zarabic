@@ -25,3 +25,22 @@ Default location:
 
 ### Contact:
 Please visit : http://safina3d.blogspot.com
+
+### ChangeLog
+- V1.3.5
+  - Lam Alif detection improved
+  - Hamza at word end corrected ex: شيء
+  - Better support for tachkil  
+  - Cleaned code  
+- V1.3
+  - Support for Cinema 4D R14+
+  - Can be used on both sys MacOs and Windows.
+  - Harakate / Tachkil support added.
+  - Some known bugs corrected
+  - More efficient code
+- V1.2
+  - zArabic can be used on Cinema 4D 13.051
+  - MoText spaces bug fixed
+  - Undo/Redo feature added
+  - Multiline text order bug fixed
+  - New icon
