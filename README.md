@@ -1,5 +1,7 @@
 # zArabic
 #### Cinema 4D Python Plugin
+###### https://safina3d.blogspot.com
+
 
 ### What is zArabic ?
 
@@ -14,8 +16,8 @@
 Copy/Paste the zArabic folder into the Maxon plugins directory.
 
 Default location:
-  - Windows:	C:\Program Files\MAXON\CINEMA 4D R<version>\plugins\
-  - Mac OS:	/Applications/MAXON/CINEMA 4D R<version>/plugins/
+  - Windows:	C:\Program Files\MAXON\CINEMA 4D R14\plugins\
+  - Mac OS:	/Applications/MAXON/CINEMA 4D R14/plugins/
 
 ### How to use :
   - Select your Text or MoText object
@@ -27,6 +29,9 @@ Default location:
 Please visit : http://safina3d.blogspot.com
 
 ### ChangeLog
+- V1.3.6
+  - "Incomplete" fonts compatibility improved
+  
 - V1.3.5
   - Lam Alif detection improved
   - Hamza at word end corrected ex: شيء

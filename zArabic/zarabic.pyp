@@ -9,7 +9,7 @@ import c4d
 from c4d import plugins, gui, bitmaps
 
 PLUGIN_ID = 1027598
-PLUGIN_VERSION = '1.3.5'
+PLUGIN_VERSION = '1.3.6'
 
 
 class LetterShape:
@@ -120,12 +120,20 @@ class Character:
 
         if self.is_arabic_character:
 
+            # Fix: Handle incomplete fonts form-b table
+            if not self.is_tachkil() and self.shape == LetterShape.ISOLATED:
+                return self.character
+
             decimal_value = AbjadData.ARABIC_FORM_B_VALUES[self.offset]
 
             if self.link_type == LinkType.WITHOUT:
                 return unichr(decimal_value)
             if self.link_type == LinkType.BEFORE:
-                return unichr(decimal_value + self.shape % 2)
+                _shape = self.shape % 2
+                if not self.is_tachkil() and _shape == LetterShape.ISOLATED:
+                    return self.character
+                return unichr(decimal_value + _shape)
+
             if self.link_type == LinkType.BOTH:
                 return unichr(decimal_value + self.shape)
 
