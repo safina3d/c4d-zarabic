@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 
+__author__ = 'Safina3D'
+__project__ = 'zArabic'
+
 
 class LetterShape:
 
@@ -113,8 +116,10 @@ class Character:
 
             if self.link_type == LinkType.WITHOUT:
                 return unichr(decimal_value)
+
             if self.link_type == LinkType.BEFORE:
                 return unichr(decimal_value + self.shape % 2)
+                
             if self.link_type == LinkType.BOTH:
                 return unichr(decimal_value + self.shape)
 

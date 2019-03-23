@@ -156,6 +156,16 @@ class TestCharacter(unittest.TestCase):
         char = Character(txt)
         self.assertEquals('z', char.transform_char())
 
+        raw = 'َ'
+        txt = raw.decode('utf-8')
+        char = Character(txt)
+        self.assertEquals('ﹶ'.decode('utf-8'), char.transform_char())
+
+        raw = '@'
+        txt = raw.decode('utf-8')
+        char = Character(txt)
+        self.assertEquals('@', char.transform_char())
+
     def test_transform_lam_alif_char(self):
         raw = 'ا'
         txt = raw.decode('utf-8')
@@ -242,6 +252,11 @@ class TestText(unittest.TestCase):
         txt = raw.decode('utf-8')
         self.assertEquals('ﺪﳴﻣ'.decode('utf-8'), Text.transform_word(txt))
 
+        # Lafd al Jalaala
+        raw = 'الله'
+        txt = raw.decode('utf-8')
+        self.assertEquals('ﷲ'.decode('utf-8'), Text.transform_word(txt))
+
     def test_transform_text(self):
         raw = 'ذهب الولد'
         txt = Text(raw)
@@ -251,6 +266,7 @@ class TestText(unittest.TestCase):
         raw = 'ذهب الولد'
         txt = Text(raw)
         self.assertEquals('\u0630\u0647\u0628\u0020\u0627\u0644\u0648\u0644\u062f', txt.text_to_unicode_string())
+
 
 if __name__ == '__main__':
     unittest.main()

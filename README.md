@@ -1,5 +1,7 @@
 # zArabic
 #### Cinema 4D Python Plugin
+###### https://safina3d.blogspot.com
+
 
 ### What is zArabic ?
 
@@ -27,6 +29,9 @@ Default location:
 Please visit : http://safina3d.blogspot.com
 
 ### ChangeLog
+- V1.3.6
+  - "Incomplete" fonts compatibility improved
+  
 - V1.3.5
   - Lam Alif detection improved
   - Hamza at word end corrected ex: شيء
