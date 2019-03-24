@@ -1,6 +1,8 @@
-# zArabic
 #### Cinema 4D Python Plugin
 ###### https://safina3d.blogspot.com
+
+# zArabic
+![zarabic c4d plugin](https://img.shields.io/badge/zArabic-v%201.3.6-green.svg)
 
 
 ### What is zArabic ?
