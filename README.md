@@ -32,6 +32,9 @@ Please visit : http://safina3d.blogspot.com
 
 ### ChangeLog
 - V1.3.6
+  - R23 + Python 3 version
+    
+- V1.3.6
   - "Incomplete" fonts compatibility improved
   
 - V1.3.5

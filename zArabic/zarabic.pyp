@@ -127,27 +127,27 @@ class Character:
             decimal_value = AbjadData.ARABIC_FORM_B_VALUES[self.offset]
 
             if self.link_type == LinkType.WITHOUT:
-                return unichr(decimal_value)
+                return chr(decimal_value)
             if self.link_type == LinkType.BEFORE:
                 _shape = self.shape % 2
                 if not self.is_tachkil() and _shape == LetterShape.ISOLATED:
                     return self.character
-                return unichr(decimal_value + _shape)
+                return chr(decimal_value + _shape)
 
             if self.link_type == LinkType.BOTH:
-                return unichr(decimal_value + self.shape)
+                return chr(decimal_value + self.shape)
 
         return self.character
 
     def transform_lam_alif_char(self):
         decimal_value = AbjadData.LAM_ALIF_VALUES[self.offset] + self.shape % 2
-        return unichr(decimal_value)
+        return chr(decimal_value)
 
     def transform_shadda_char(self):
         index = self.offset % 42 + 3 * (self.shape % 2)
         if index < len(AbjadData.SHADDA_VALUES):
-            return unichr(AbjadData.SHADDA_VALUES[index])
-        return unichr(65148 + self.shape % 2)
+            return chr(AbjadData.SHADDA_VALUES[index])
+        return chr(65148 + self.shape % 2)
 
     def flip_special_char(self):
         """ Returns the opposite character """
@@ -168,22 +168,23 @@ class Character:
         if self.character == '>':
             return '<'
         if self.character == ',':
-            return unichr(1548)
+            return chr(1548)
         if self.character == ';':
-            return unichr(1563)
+            return chr(1563)
         if self.character == '?':
-            return unichr(1567)
-        if self.character == unichr(171):
-            return unichr(187)
-        if self.character == unichr(187):
-            return unichr(171)
+            return chr(1567)
+        if self.character == chr(171):
+            return chr(187)
+        if self.character == chr(187):
+            return chr(171)
         return self.character
 
 
 class Text:
 
     def __init__(self, user_text):
-        self.user_text = user_text.decode('utf-8')
+        # self.user_text = user_text.decode('utf-8', 'strict')
+        self.user_text = user_text
 
     def get_word_list(self):
         """ Split the given text into words """
@@ -278,16 +279,16 @@ class Text:
 
             # Lam Alif case
             if Text.is_lam_alif_context(current_char, next_letter):
-                    if index == 0:
-                        next_letter.shape = LetterShape.INITIAL
+                if index == 0:
+                    next_letter.shape = LetterShape.INITIAL
+                else:
+                    if current_char.can_be_connected_to(previous_letter):
+                        next_letter.shape = LetterShape.MIDDLE
                     else:
-                        if current_char.can_be_connected_to(previous_letter):
-                            next_letter.shape = LetterShape.MIDDLE
-                        else:
-                            next_letter.shape = LetterShape.INITIAL
-                    result_word += next_letter.transform_lam_alif_char()
-                    index += (next_letter_index - index) + 1
-                    continue
+                        next_letter.shape = LetterShape.INITIAL
+                result_word += next_letter.transform_lam_alif_char()
+                index += (next_letter_index - index) + 1
+                continue
 
             # Shadda case
             if Text.is_shadda_context(current_char, next_char):
@@ -338,11 +339,11 @@ class Text:
             _0x_value = hex(ord(char))
             hex_value = _0x_value[2:]
             zeros = (4 - len(hex_value)) * '0'
-            ucn += '\u' + zeros + hex_value
+            ucn += '\\u' + zeros + hex_value
         return ucn
 
 
-class Zarabic(plugins.CommandData):
+class ZArabic(plugins.CommandData):
 
     dialog = None
 
@@ -351,15 +352,15 @@ class Zarabic(plugins.CommandData):
             self.dialog = ErrorGui()
 
         screen_dimensions = gui.GeGetScreenDimensions(1, 1, False)
-        xpos = 0.5 * screen_dimensions['sx2'] - 150
-        ypos = 0.5 * screen_dimensions['sy2'] - 50
+        x_pos = int(0.5 * screen_dimensions['sx2'] - 150)
+        y_pos = int(0.5 * screen_dimensions['sy2'] - 50)
         current_object = doc.GetActiveObject()
 
         if current_object is None:
             self.dialog.setMessage('No Text/MoText object selected !')
-            return self.dialog.Open(c4d.DLG_TYPE_MODAL, PLUGIN_ID, xpos, ypos, 300, 100)
+            return self.dialog.Open(c4d.DLG_TYPE_MODAL, PLUGIN_ID, x_pos, y_pos, 300, 100)
         else:
-            if Zarabic.is_text_object(current_object):
+            if ZArabic.is_text_object(current_object):
                 doc.StartUndo()
                 doc.AddUndo(c4d.UNDOTYPE_CHANGE, current_object)
                 original_text = current_object[c4d.PRIM_TEXT_TEXT]
@@ -369,10 +370,8 @@ class Zarabic(plugins.CommandData):
                     text = Text(phrase)
                     result += text.transform_text() + '\n'
 
-                result = result.strip().encode('utf-8')
-
                 if c4d.GetC4DVersion() > 13016:
-                    current_object[c4d.PRIM_TEXT_TEXT] = result
+                    current_object[c4d.PRIM_TEXT_TEXT] = result.strip()
                 else:
                     # Cinema 4D R13.016 fix
                     text = Text(result)
@@ -381,7 +380,7 @@ class Zarabic(plugins.CommandData):
                 doc.EndUndo()
             else:
                 self.dialog.setMessage(current_object.GetTypeName() + ' is not a Text/MoText object !')
-                return self.dialog.Open(c4d.DLG_TYPE_MODAL, PLUGIN_ID, xpos, ypos, 300, 100)
+                return self.dialog.Open(c4d.DLG_TYPE_MODAL, PLUGIN_ID, x_pos, y_pos, 300, 100)
 
         c4d.EventAdd()
         return True
@@ -408,6 +407,7 @@ class UserArea(gui.GeUserArea):
 class ErrorGui(gui.GeDialog):
 
     def __init__(self):
+        super().__init__()
         self.message = ''
         self.user_area = UserArea()
 
@@ -424,7 +424,8 @@ class ErrorGui(gui.GeDialog):
         self.GroupEnd()
         return True
 
+
 if __name__ == '__main__':
     icon = bitmaps.BaseBitmap()
     icon.InitWith(os.path.join(os.path.dirname(__file__), 'res', 'zarabic.png'))
-    plugins.RegisterCommandPlugin(PLUGIN_ID, 'zArabic ' + PLUGIN_VERSION, 0, icon, 'Write arabic in Cinema4D ;)', Zarabic())
+    plugins.RegisterCommandPlugin(PLUGIN_ID, 'zArabic ' + PLUGIN_VERSION, 0, icon, 'Write arabic in Cinema4D ;)', ZArabic())
